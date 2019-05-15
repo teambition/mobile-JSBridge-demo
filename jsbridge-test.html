@@ -34,6 +34,18 @@
         <input type="button" id="refersh-plugin" value="refersh plugin in task" onclick="refreshPlugin();" />
     </p>
     <p>
+        <input type="button" id="show-toast" value="show success" onclick="showSuccess();" />
+    </p>
+    <p>
+        <input type="button" id="show-toast" value="show error" onclick="showError();" />
+    </p>
+    <p>
+        <input type="button" id="show-toast" value="show info" onclick="showInfo();" />
+    </p>
+    <p>
+        <input type="button" id="show-toast" value="show warning" onclick="showWarning();" />
+    </p>
+    <p>
         <form>
             <input type="file" id="pic-select" onchange="onImageSelected();">
         </form>
@@ -119,6 +131,39 @@
 
     function refreshPlugin() {
     	window.TeambitionMobileSDK.call('refreshPlugin');
+    }
+
+    function showSuccess() {
+    	window.TeambitionMobileSDK.call('showToast', {
+			type: "success",
+			message: "success",
+			description: "good!"
+		});
+    }
+
+    function showError() {
+    	window.TeambitionMobileSDK.call('showToast', {
+			type: "error",
+			message: "error",
+			description: "failure!"
+		});
+
+    }
+
+    function showInfo() {
+    	window.TeambitionMobileSDK.call('showToast', {
+			type: "info",
+			message: "info",
+			description: "show Info!"
+		});
+    }
+
+    function showWarning() {
+    	window.TeambitionMobileSDK.call('showToast', {
+			type: "warning",
+			message: "warning",
+			description: "warning!!!"
+		});
     }
 
     function onImageSelected() {
