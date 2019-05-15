@@ -1,0 +1,453 @@
+<html>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <title>
+        js调用java
+    </title>
+</head>
+
+<body>
+    <p id="result" />
+    <p>
+        <a href="teambition://organization/members?organizationId=50c32afae8cf1439d35a87e6">进入成员</a>
+    </p>
+    <p>
+        <a href="teambition://task:57fe4cffd8a048981347b5e3">进入task详情</a>
+    </p>
+    <p>
+        <a href="teambition://work:56f3571845548d6725c5845c">进入文件详情</a>
+    </p>
+    <p>
+        <a href="teambition://project:56a6c9f9f0044bce57564273">进入项目</a>
+    </p>
+    <p>
+        <input type="button" id="window-alert" value="Window Alert" onclick="alert('警告!');">
+    </p>
+    <p>
+        <input type="button" id="alert" value="Alert" onclick="showAlert();" />
+    </p>
+    <p>
+        <input type="button" id="confirm" value="Confirm" onclick="showConfirm();" />
+    </p>
+    <p>
+        <form>
+            <input type="file" id="pic-select" onchange="onImageSelected();">
+        </form>
+    </p>
+    <p>
+        <input type="button" id="take-select-pic" value="take or select pic" onclick="takeOrSelectPic();" />
+    </p>
+    <p>
+        <input type="button" id="date" value="select date" onclick="selectDate();" />
+    </p>
+    <p>
+        <input type="button" id="time" value="select time" onclick="selectTime();" />
+    </p>
+    <p>
+        <input type="button" id="date-time" value="select date and time" onclick="selectDateTime();" />
+    </p>
+    <p>
+        <input type="button" id="select-project-member" value="select project member" onclick="selectProjectMember();" />
+    </p>
+    <p>
+        <input type="button" id="select-org-member" value="select org member" onclick="selectOrgMember();" />
+    </p>
+    <p>
+        <input type="button" id="task" value="select or create task" onclick="createOrSelectTask();" />
+    </p>
+    <p>
+        <input type="button" id="event" value="select or create event" onclick="createOrSelectEvent();" />
+    </p>
+    <p>
+        <input type="button" id="qrcode" value="scan qrcode" onclick="scanQrcode();" />
+    </p>
+    <p>
+        <input type="button" id="network" value="network" onclick="getNetworkStatus();" />
+    </p>
+    <p>
+        <input type="button" id="device" value="device" onclick="getDevice();" />
+    </p>
+    <p>
+        <input type="button" id="locale" value="locale" onclick="getLocale();" />
+    </p>
+    <p>
+        <input type="button" id="exit" value="exit" onclick="exit();" />
+    </p>
+    <p>
+        <input id="title" placeholder="input title" />
+        <input type="button" id="title" value="set title" onclick="setTitle();" />
+    </p>
+    <p>
+        <input type="button" id="share" value="share" onclick="share();" />
+    </p>
+    <p>
+        <input id="clipboard" placeholder="input content to set clipboard" />
+        <input type="button" id="set-clipboard" value="set clipboard" onclick="setClipboardContent();" />
+    </p>
+    <p>
+        <input type="button" id="get-clipboard" value="get clipboard" onclick="getClipboardContent();" />
+    </p>
+    <p>
+        <input type="button" id="contacts" value="contacts" onclick="getContacts();" />
+    </p>
+    <p>
+        <input type="button" id="menu" value="create menus" onclick="createMenus();" />
+    </p>
+</body>
+<script>
+    function registHandle() {
+        alert('user clicked 1:');
+        // alert("registerHandler");
+
+    }
+    function showAlert() {
+        window.WebViewJavascriptBridge.callHandler(
+            'alert', 'hello alert!', null)
+    }
+
+    function showConfirm() {
+        window.WebViewJavascriptBridge.callHandler(
+            'confirm', 'hello confirm!', bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                document.getElementById('result').innerHTML = result.isSuccess
+            })
+    }
+
+    function onImageSelected() {
+        console.log("onImageSelected")
+        let file = document.getElementById('pic-select').files[0]
+        console.log(file)
+        console.log(getObjectURL(file))
+        let img = document.createElement('img')
+        img.src = getObjectURL(file)
+        document.body.appendChild(img)
+    }
+
+    function getObjectURL(file) {
+        if (!file) {
+            return
+        }
+        var url = null
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file)
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file)
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file)
+        }
+        return url
+    }
+
+    function takeOrSelectPic() {
+        window.WebViewJavascriptBridge.callHandler(
+            'takeOrSelectPic', null, bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let img = document.createElement('img')
+                    let v = result.data.imgBase64
+                    img.src = "data:image/jpg;base64," + v
+                    img.style.height = '100px'
+                    img.style.width = '100px'
+                    document.body.appendChild(img)
+                }
+            }
+        )
+    }
+
+    function selectDate() {
+        let timeRequest = {
+            type: 'date'
+        }
+        window.WebViewJavascriptBridge.callHandler(
+            'selectTime', JSON.stringify(timeRequest), bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let date = new Date(result.data.timeStamp)
+                    document.getElementById('result').innerHTML = date
+                }
+            }
+        )
+    }
+
+    function selectTime() {
+        let timeRequest = {
+            type: 'time'
+        }
+        window.WebViewJavascriptBridge.callHandler(
+            'selectTime', JSON.stringify(timeRequest), bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let date = new Date(result.data.timeStamp)
+                    document.getElementById('result').innerHTML = date.getHours() + ' : ' + date.getMinutes() + ' : ' + date.getSeconds()
+                }
+            }
+        )
+    }
+
+    function selectDateTime() {
+        let timeRequest = {
+            type: 'dateTime'
+        }
+        window.WebViewJavascriptBridge.callHandler(
+            'selectTime', JSON.stringify(timeRequest), bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let date = result.data.timeStamp
+                    document.getElementById('result').innerHTML = new Date(date)
+                }
+            }
+        )
+    }
+
+    function selectProjectMember() {
+        let memberRequest = {
+            type: 'project',
+            projectId: '51762b8f78cfa9f357000011'
+        }
+        window.WebViewJavascriptBridge.callHandler(
+            'members', JSON.stringify(memberRequest), bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let members = result.data.members
+                    let display = ''
+                    members.forEach(member => {
+                        display += member.name
+                        display += '  '
+                        display += member.userId
+                        display += '<br />'
+                        display += member.avatarUrl
+                        display += '<br />'
+                        display += '<br />'
+                    })
+                    document.getElementById('result').innerHTML = display
+                }
+            }
+        )
+    }
+
+    function selectOrgMember() {
+        let memberRequest = {
+            type: 'organization',
+            organizationId: '50c32afae8cf1439d35a87e6'
+        }
+        window.WebViewJavascriptBridge.callHandler(
+            'members', JSON.stringify(memberRequest), bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let members = result.data.members
+                    let display = ''
+                    members.forEach(member => {
+                        display += member.name
+                        display += '  '
+                        display += member.userId
+                        display += '<br />'
+                        display += member.avatarUrl
+                        display += '<br />'
+                        display += '<br />'
+                    })
+                    document.getElementById('result').innerHTML = display
+                }
+            }
+        )
+    }
+
+    function createOrSelectTask() {
+        window.WebViewJavascriptBridge.callHandler(
+            'task', null, bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let task = result.data.task[0]
+                    document.getElementById('result').innerHTML = task.type + ' ' + task.id + ' ' + task.title
+                }
+            }
+        )
+    }
+
+    function createOrSelectEvent() {
+        let startTime = new Date().setUTCDate(20)
+        let endTime = new Date().setUTCDate(30)
+        let eventRequest = {
+            startTime,
+            endTime,
+            projectId: '595dfd111cf8341406271a04',
+            followers: [
+                {
+                    _userId: '550c1651d06cff020c81be16',
+                    name: '翁郁炜',
+                    avatarUrl: 'https://striker.teambition.net/thumbnail/110sf489791d294fb5d8867c1cbac8631a6b/w/200/h/200'
+                }
+            ]
+        }
+        window.WebViewJavascriptBridge.callHandler(
+            'event', JSON.stringify(eventRequest), bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let event = result.data.event[0]
+                    document.getElementById('result').innerHTML = event.type + ' ' + event.id + ' ' + event.title
+                }
+            }
+        )
+    }
+
+    function scanQrcode() {
+        window.WebViewJavascriptBridge.callHandler(
+            'qrcode', null, bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let qrcode = result.data.qrcode
+                    document.getElementById('result').innerHTML = qrcode
+                }
+            }
+        )
+    }
+
+    function getNetworkStatus() {
+        window.WebViewJavascriptBridge.callHandler(
+            'network', null, bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let network = result.data.type
+                    document.getElementById('result').innerHTML = network
+                }
+            }
+        )
+    }
+
+    function getDevice() {
+        window.WebViewJavascriptBridge.callHandler(
+            'device', null, bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let device = result.data.device
+                    document.getElementById('result').innerHTML = device
+                }
+            }
+        )
+    }
+
+    function getLocale() {
+        window.WebViewJavascriptBridge.callHandler(
+            'locale', null, bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let locale = result.data.locale
+                    document.getElementById('result').innerHTML = locale
+                }
+            }
+        )
+    }
+
+    function exit() {
+        // exit webview doesn't have callback
+        window.WebViewJavascriptBridge.callHandler('exit')
+    }
+
+    function setTitle() {
+        let title = document.getElementById('title').value
+        let titleRequest = {
+            title
+        }
+        window.WebViewJavascriptBridge.callHandler(
+            'title', JSON.stringify(titleRequest), bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    window.alert('设置title成功')
+                }
+            }
+        )
+    }
+
+    function share() {
+        let shareRequest = {
+            subject: '百度一下',
+            content: 'http://baidu.com'
+        }
+        // 调用系统的分享功能，没有回调
+        window.WebViewJavascriptBridge.callHandler('share', shareRequest)
+    }
+
+    function setClipboardContent() {
+        let content = document.getElementById('clipboard').value
+        let clipboardRequest = {
+            type: 'set',
+            content
+        }
+        window.WebViewJavascriptBridge.callHandler(
+            'clipboard', JSON.stringify(clipboardRequest), bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    window.alert('设置clipboard成功')
+                }
+            }
+        )
+    }
+
+    function getClipboardContent() {
+        let clipboardRequest = {
+            type: 'get'
+        }
+        window.WebViewJavascriptBridge.callHandler(
+            'clipboard', JSON.stringify(clipboardRequest), bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let content = result.data.content
+                    window.alert('clipboard 内容: ' + content)
+                }
+            }
+        )
+    }
+
+    function getContacts() {
+        window.WebViewJavascriptBridge.callHandler(
+            'contacts', null, bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    let contacts = result.data.contacts
+                    let display = ''
+                    contacts.forEach(contact => {
+                        display += contact.name
+                        display += '  '
+                        display += contact.value
+                        display += '<br />'
+                    })
+                    document.getElementById('result').innerHTML = display
+                }
+            }
+        )
+    }
+
+    let menus = [
+        { 'id': 'a012', title: 'add' },
+        { 'id': 'b345', title: 'delete' },
+        { 'id': 'c678', title: 'exit' }
+    ]
+    function createMenus() {
+        let menuRequest = {
+            menus
+        }
+        window.WebViewJavascriptBridge.callHandler(
+            'menu', JSON.stringify(menuRequest), bridgeResponse => {
+                let result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                    // 成功后注册Handler，用于native调用js
+                    window.WebViewJavascriptBridge.registerHandler('menu', data => {
+                        let result = JSON.parse(data)
+                        onClickMenu(result.id)
+                    })
+                }
+            }
+        )
+    }
+
+    function onClickMenu(menuId) {
+        menus.forEach(menu => {
+            if (menuId === menu.id) {
+                window.alert('user clicked menu: ' + menu.title)
+            }
+        })
+    }
+
+</script>
+
+</html>
