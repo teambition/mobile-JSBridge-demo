@@ -340,7 +340,10 @@
 
     function exit() {
         // exit webview doesn't have callback
-        window.WebViewJavascriptBridge.callHandler('exit')
+        // window.WebViewJavascriptBridge.callHandler('exit')
+        window.WebViewJavascriptBridge.callHandler(
+            'alert', 'hello alert!', null)
+        window.TeambitionMobileSDK.call('exit')
     }
 
     function setTitle() {
