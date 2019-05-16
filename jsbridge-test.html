@@ -152,7 +152,11 @@
     }
 
     function showSuccess() {
-        Toast.success({ message: "添加成功" })
+        window.WebViewJavascriptBridge.callHandler('showToast', {
+			type: "info",
+			message: "添加成功",
+			description: "show Info!"
+		})
     }
 
     function showError() {
