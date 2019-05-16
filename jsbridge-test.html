@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <div>3333333</div>
+    <div>444444</div>
     <p id="result" />
     <p>
         <a href="teambition://organization/members?organizationId=50c32afae8cf1439d35a87e6">进入成员</a>
@@ -55,7 +55,7 @@
         <input type="button" id="take-select-pic" value="take or select pic" onclick="takeOrSelectPic();" />
     </p>
     <p>
-        <input type="button" id="date" value="select date" onclick="selectDate();" />
+        <input type="button" id="date" value="select date" onclick="selectDateTest();" />
     </p>
     <p>
         <input type="button" id="time" value="select time" onclick="selectTime();" />
@@ -232,6 +232,27 @@
                 }
             }
         )
+    }
+
+    const openDatepicker = () => {
+        return new Promise((resolve, reject) => {
+            if (window.WebViewJavascriptBridge) {
+            window.WebViewJavascriptBridge.callHandler('selectTime', JSON.stringify({ type: 'date' }), bridgeResponse => {
+                const result = JSON.parse(bridgeResponse)
+                if (result.isSuccess) {
+                const date = new Date(result.data.timeStamp)
+                resolve(date)
+                }
+                reject()
+            })
+            }
+        })
+    }
+
+    function selectDateTest() {
+        openDatepicker().then((date) => {
+            document.getElementById('result').innerHTML = date.valueOf()
+        })
     }
 
     function selectTime() {
