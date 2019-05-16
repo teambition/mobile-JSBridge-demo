@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <div>1</div>
+    <div>222222</div>
     <p id="result" />
     <p>
         <a href="teambition://organization/members?organizationId=50c32afae8cf1439d35a87e6">进入成员</a>
@@ -410,18 +410,7 @@
     }
 
     function setTitle() {
-        let title = document.getElementById('title').value
-        let titleRequest = {
-            title
-        }
-        window.WebViewJavascriptBridge.callHandler(
-            'title', JSON.stringify({ title: 'ssssss' }), bridgeResponse => {
-                let result = JSON.parse(bridgeResponse)
-                if (result.isSuccess) {
-                    window.alert('设置title成功')
-                }
-            }
-        )
+        window.WebViewJavascriptBridge.callHandler('title', JSON.stringify({ title: 'ssssss' }))
     }
 
     function share() {
