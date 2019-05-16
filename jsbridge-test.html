@@ -129,25 +129,34 @@
             })
     }
 
+    const Toast = {
+        open: (options) => {
+            if (!options.type) {
+                options.type = 'info'
+            }
+            if (window.WebViewJavascriptBridge) {
+                window.WebViewJavascriptBridge.callHandler('showToast', options)
+            }
+        },
+        success: (options) => {
+            Toast.open(Object.assign({}, options, { type: 'success' }))
+        },
+        error: (options) => {
+            Toast.open(Object.assign({}, options, { type: 'error' }))
+        },
+    }
+
+
     function refreshPlugin() {
     	window.TeambitionMobileSDK.call('refreshPlugin');
     }
 
     function showSuccess() {
-    	window.TeambitionMobileSDK.call('showToast', {
-			type: "success",
-			message: "success",
-			description: "good!"
-		});
+        Toast.success({ message: "添加成功" })
     }
 
     function showError() {
-    	window.TeambitionMobileSDK.call('showToast', {
-			type: "error",
-			message: "error",
-			description: "failure!"
-		});
-
+        Toast.error({ message: "添加失败" })
     }
 
     function showInfo() {
