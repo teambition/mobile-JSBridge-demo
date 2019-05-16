@@ -91,7 +91,7 @@
     </p>
     <p>
         <input id="title" placeholder="input title" />
-        <input type="button" id="title" value="set title" onclick="setNavigatorTitle('hahahahahah');" />
+        <input type="button" id="title" value="set title" onclick="setNavigatorTitle();" />
     </p>
     <p>
         <input type="button" id="share" value="share" onclick="share();" />
@@ -402,9 +402,9 @@
         )
     }
 
-    const setNavigatorTitle = (title) => {
+    const setNavigatorTitle = () => {
         if (window.TeambitionMobileSDK) {
-            window.TeambitionMobileSDK.call('title', JSON.stringify({ title }))
+            window.TeambitionMobileSDK.call('title', JSON.stringify({ title: 'hahahahahahahah' }))
         }
     }
 
