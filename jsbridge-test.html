@@ -221,7 +221,10 @@
 
     function selectDate() {
         let timeRequest = {
-            type: 'date'
+            type: 'date',
+            startTime: 1557996069000,
+            endTime: 1559996069000,
+            currentTime: 1558996069000 // 默认为当前
         }
         window.WebViewJavascriptBridge.callHandler(
             'selectTime', JSON.stringify(timeRequest), bridgeResponse => {
