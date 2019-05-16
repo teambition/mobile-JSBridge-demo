@@ -91,7 +91,7 @@
     </p>
     <p>
         <input id="title" placeholder="input title" />
-        <input type="button" id="title" value="set title" onclick="setTitle();" />
+        <input type="button" id="title" value="set title" onclick="setNavigatorTitle('hahahahahah');" />
     </p>
     <p>
         <input type="button" id="share" value="share" onclick="share();" />
@@ -402,8 +402,16 @@
         )
     }
 
-    function exit() {
-        window.WebViewJavascriptBridge.callHandler('close');
+    const setNavigatorTitle = (title) => {
+        if (window.TeambitionMobileSDK) {
+            window.TeambitionMobileSDK.call('title', JSON.stringify({ title }))
+        }
+    }
+
+    const exit = () => {
+        if (window.TeambitionMobileSDK) {
+            window.TeambitionMobileSDK.call('close')
+        }
     }
 
     function setTitle() {
