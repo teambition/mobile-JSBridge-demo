@@ -391,7 +391,7 @@
     }
 
     function exit() {
-        window.TeambitionMobileSDK.call('close');
+        window.WebViewJavascriptBridge.callHandler('close');
     }
 
     function setTitle() {
@@ -400,7 +400,7 @@
             title
         }
         window.WebViewJavascriptBridge.callHandler(
-            'title', JSON.stringify(titleRequest), bridgeResponse => {
+            'title', JSON.stringify({ title: 'ssssss' }), bridgeResponse => {
                 let result = JSON.parse(bridgeResponse)
                 if (result.isSuccess) {
                     window.alert('设置title成功')
