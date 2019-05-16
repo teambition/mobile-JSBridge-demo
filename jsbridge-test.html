@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <div>444444</div>
+    <div>555555</div>
     <p id="result" />
     <p>
         <a href="teambition://organization/members?organizationId=50c32afae8cf1439d35a87e6">进入成员</a>
@@ -240,8 +240,9 @@
             window.WebViewJavascriptBridge.callHandler('selectTime', JSON.stringify({ type: 'date' }), bridgeResponse => {
                 const result = JSON.parse(bridgeResponse)
                 if (result.isSuccess) {
-                const date = new Date(result.data.timeStamp)
-                resolve(date)
+                    alert('111111111')
+                    const date = new Date(result.data.timeStamp)
+                    resolve(date)
                 }
                 reject()
             })
@@ -251,7 +252,8 @@
 
     function selectDateTest() {
         openDatepicker().then((date) => {
-            document.getElementById('result').innerHTML = date.valueOf()
+            alert(date.valueOf())
+            // document.getElementById('result').innerHTML = date.valueOf()
         })
     }
 
