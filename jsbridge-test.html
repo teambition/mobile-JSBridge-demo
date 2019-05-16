@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <div>1</div>
     <p id="result" />
     <p>
         <a href="teambition://organization/members?organizationId=50c32afae8cf1439d35a87e6">进入成员</a>
@@ -91,7 +92,7 @@
     </p>
     <p>
         <input id="title" placeholder="input title" />
-        <input type="button" id="title" value="set title" onclick="setNavigatorTitle();" />
+        <input type="button" id="title" value="set title" onclick="setTitle();" />
     </p>
     <p>
         <input type="button" id="share" value="share" onclick="share();" />
@@ -400,12 +401,6 @@
                 }
             }
         )
-    }
-
-    const setNavigatorTitle = () => {
-        if (window.TeambitionMobileSDK) {
-            window.TeambitionMobileSDK.call('title', JSON.stringify({ title: 'hahahahahahahah' }))
-        }
     }
 
     const exit = () => {
