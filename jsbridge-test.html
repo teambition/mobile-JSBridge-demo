@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <div>222222</div>
+    <div>3333333</div>
     <p id="result" />
     <p>
         <a href="teambition://organization/members?organizationId=50c32afae8cf1439d35a87e6">进入成员</a>
@@ -133,17 +133,19 @@
     const Toast = {
         open: (options) => {
             if (!options.type) {
-                options.type = 'info'
+            options.type = 'info'
             }
-            if (window.WebViewJavascriptBridge) {
-                window.WebViewJavascriptBridge.callHandler('showToast', options)
+            console.log('open', options)
+            if (window.TeambitionMobileSDK) {
+            window.TeambitionMobileSDK.call('showToast', options)
             }
         },
         success: (options) => {
-            Toast.open(Object.assign({}, options, { type: 'success' }))
+            Toast.open({ ...options, type: 'success' })
+            console.log('success')
         },
         error: (options) => {
-            Toast.open(Object.assign({}, options, { type: 'error' }))
+            Toast.open({ ...options, type: 'error' })
         },
     }
 
@@ -153,10 +155,7 @@
     }
 
     function showSuccess() {
-        window.WebViewJavascriptBridge.callHandler('showToast', {
-			type: "info",
-			message: "添加成功"
-		})
+        Toast.success({ message: "添加成功" })
     }
 
     function showError() {
