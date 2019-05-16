@@ -152,7 +152,7 @@
     }
 
     function showSuccess() {
-        window.TeambitionMobileSDK.call('showToast', {
+        window.WebViewJavascriptBridge.callHandler('showToast', {
 			type: "info",
 			message: "添加成功"
 		})
