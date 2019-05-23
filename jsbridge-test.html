@@ -432,8 +432,8 @@
     }
 
     const exit = () => {
-        if (window.TeambitionMobileSDK) {
-            window.TeambitionMobileSDK.call('exit')
+        if (window.WebViewJavascriptBridge) {
+            window.WebViewJavascriptBridge.call('exit')
         }
     }
 
