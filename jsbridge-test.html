@@ -94,6 +94,9 @@
         <input type="button" id="exit" value="exit" onclick="exit();" />
     </p>
     <p>
+        <input type="button" id="refersh" value="refersh" onclick="refersh();" />
+    </p>
+    <p>
         <input id="title" placeholder="input title" />
         <input type="button" id="title" value="set title" onclick="setTitle();" />
     </p>
@@ -435,6 +438,12 @@
         if (window.WebViewJavascriptBridge) {
             window.WebViewJavascriptBridge.call('exit')
         }
+    }
+
+    const refersh = () => {
+    	window.TeambitionMobileSDK.call('forwardAction', {
+			action: 'refreshPlugin'
+		});
     }
 
     function setTitle() {
