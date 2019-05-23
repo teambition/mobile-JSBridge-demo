@@ -435,9 +435,8 @@
     }
 
     const exit = () => {
-        if (window.WebViewJavascriptBridge) {
-            window.WebViewJavascriptBridge.call('exit')
-        }
+        window.WebViewJavascriptBridge.call('exit')
+        
     }
 
     const refersh = () => {
