@@ -435,11 +435,15 @@
     }
 
     const exit = () => {
-    	if (window.TeambitionMobileSDK) {
-            window.TeambitionMobileSDK.call('exit')
-        }
-        window.WebViewJavascriptBridge.call('exit')
-        
+        window.WebViewJavascriptBridge.callHandler('confirm', 'hello confirm!', bridgeResponse => {
+            let result = JSON.parse(bridgeResponse)
+            document.getElementById('result').innerHTML = result.isSuccess
+        })
+        window.WebViewJavascriptBridge.callHandler('title', JSON.stringify({ title: '1' }))
+        window.WebViewJavascriptBridge.callHandler('title', JSON.stringify({ title: '2' }))
+        window.WebViewJavascriptBridge.callHandler('title', JSON.stringify({ title: '3' }))
+        window.WebViewJavascriptBridge.callHandler('exit');
+
     }
 
     const refersh = () => {
